@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software in your research or teaching, please cite it as below."
+type: software
+title: "MIRL Rephoto: then and now, aligned"
+abstract: >-
+  Align a historical photograph to a current one of the same building, or
+  square an oblique facade to a flat elevation and measure from it. Runs in
+  the browser, no build.
+authors:
+  - family-names: "O'Brien"
+    given-names: "Jeff"
+    email: "jeffobrien@ucsb.edu"
+    affiliation: >-
+      Material / Image Research Lab, Department of History of Art &
+      Architecture, University of California, Santa Barbara
+version: "1.0.0"
+date-released: "2026-06-10"
+license: MIT
+repository-code: "https://github.com/mirl-ucsb/mirl-rephoto"
+url: "https://mirl-ucsb.github.io/mirl-rephoto/"
+keywords:
+  - architectural history
+  - rephotography
+  - homography
+  - image rectification
+  - photogrammetry
+  - digital humanities
+  - cultural heritage
+  - minimal computing
