@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIRL Rephoto — then and now, aligned</title>
+<meta name="description" content="Align a historical photograph to a current one of the same building, or square a slanted facade to a flat elevation, then measure from it. A no-build tool from the Material / Image Research Lab, UCSB.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="app">
+  <h1>MIRL&nbsp;Rephoto</h1>
+  <span class="tag">then and now, aligned</span>
+  <span class="spacer"></span>
+  <a href="https://mirl.arthistory.ucsb.edu" target="_blank" rel="noopener">Material&nbsp;/&nbsp;Image Research Lab</a>
+</header>
+
+<div class="toolbar">
+  <div class="group">
+    <span class="label">Sheet index</span>
+    <div class="seg" id="mode-seg">
+      <button data-mode="align" class="on"><span class="sheetno">R-01</span>Align points</button>
+      <button data-mode="compare" id="mode-compare" disabled><span class="sheetno">R-02</span>Compare</button>
+      <button data-mode="rectify"><span class="sheetno">R-03</span>Rectify &amp; measure</button>
+    </div>
+  </div>
+
+  <div class="group" id="align-tools">
+    <button class="btn" id="swap-btn" title="Swap which image is 'then' and which is 'now'">Swap then / now</button>
+    <button class="btn" id="clear-pts" title="Remove every control point">Clear points</button>
+  </div>
+
+  <div class="group" id="present-tools" style="display:none">
+    <span class="label">Show</span>
+    <div class="seg" id="present-seg">
+      <button data-present="curtain" class="on">Curtain</button>
+      <button data-present="onion">Onion skin</button>
+      <button data-present="blink">Blink</button>
+    </div>
+    <label class="inline" id="present-opacity-wrap" style="display:none">Then
+      <input type="range" id="present-opacity" min="0" max="100" value="50"></label>
+    <label class="inline" id="present-blink-wrap" style="display:none">Speed
+      <input type="range" id="present-blink" min="300" max="2000" step="100" value="900"></label>
+  </div>
+
+  <div class="group" id="rectify-tools" style="display:none">
+    <button class="btn toggle" id="measure-btn" title="Click two points to measure a distance">Measure</button>
+    <button class="btn" id="clear-rect" title="Remove the four corners">Clear corners</button>
+  </div>
+
+  <span style="flex:1"></span>
+
+  <div class="group">
+    <div class="menu-wrap">
+      <button class="btn" id="export-btn">Export &#9662;</button>
+      <div class="menu hidden" id="export-menu">
+        <button data-act="png">Save current view as PNG</button>
+        <button data-act="points">Save points &amp; homography (.json)</button>
+        <hr>
+        <button data-act="project">Save project (.json)</button>
+        <button data-act="load">Open project (.json)</button>
+      </div>
+    </div>
+    <button class="btn" id="panel-btn" title="Show or hide the panel">Panel</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="stage" id="stage">
+    <div class="rcurtain" id="rcurtain" style="left:50%"></div>
+  </div>
+  <aside class="sidebar" id="sidebar">
+    <div class="titleblock">
+      <div class="tb-org">Material / Image Research Lab, UC Santa Barbara</div>
+      <div class="tb-title">Rephotographic survey</div>
+      <div class="tb-cells">
+        <div class="tb-cell"><span>Sheet</span><b id="tb-sheet">R-01</b></div>
+        <div class="tb-cell"><span>Contents</span><b id="tb-mode">Align points</b></div>
+        <div class="tb-cell"><span>Date</span><b>2026</b></div>
+      </div>
+    </div>
+    <div id="sidebar-body"></div>
+  </aside>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="file-then" accept="image/*" class="sr">
+<input type="file" id="file-now" accept="image/*" class="sr">
+<input type="file" id="project-input" accept="application/json,.json" class="sr">
+
+<script src="js/homography.js"></script>
+<script src="js/align.js"></script>
+<script src="js/rectify.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
