@@ -1,4 +1,5 @@
 cff-version: 1.2.0
+doi: 10.5281/zenodo.20651089
 message: "If you use this software in your research or teaching, please cite it as below."
 type: software
 title: "MIRL Rephoto: then and now, aligned"
