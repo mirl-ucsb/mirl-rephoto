@@ -1,3 +1,6 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# Local chat handoff notes, not part of the published tool
+chat-handoff-*.md
