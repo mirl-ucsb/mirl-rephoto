@@ -36,7 +36,7 @@ MR.Rectify = (function () {
     const dots = MR.util.h('div', { id: 'dots-rect', style: { position: 'absolute', inset: '0' } });
     const head = MR.util.h('div', { class: 'panel-head' },
       MR.util.h('span', { class: 'swatch', style: { background: 'var(--accent)' } }),
-      MR.util.h('span', null, R().side.toUpperCase() + '  ·  click the four corners, clockwise from top-left'));
+      MR.util.h('span', null, R().side.toUpperCase() + '  ·  click the four corners of the rectangle, in any order'));
     const p = MR.util.h('div', { class: 'imgpanel', id: 'panel-rect' }, head, img, svg, dots);
     p.addEventListener('click', e => onCornerClick(e, p));
     p.addEventListener('dragover', e => { e.preventDefault(); p.classList.add('drop'); });
@@ -92,10 +92,18 @@ MR.Rectify = (function () {
   }
 
   /* ---------- the squared result + measuring ---------- */
+  /* the four corners sorted clockwise from the top-left, so the squared
+     elevation is correct no matter what order the corners were clicked in */
+  function orderedCorners(pts) {
+    if (pts.length !== 4) return pts;
+    const cx = (pts[0][0] + pts[1][0] + pts[2][0] + pts[3][0]) / 4;
+    const cy = (pts[0][1] + pts[1][1] + pts[2][1] + pts[3][1]) / 4;
+    return pts.slice().sort((a, b) => Math.atan2(a[1] - cy, a[0] - cx) - Math.atan2(b[1] - cy, b[0] - cx));
+  }
   function computeRect() {
     const RH = 1000, RW = 1000 * (R().aspectW / R().aspectH);
     R()._rect = { RW, RH };
-    R().H = MR.Homography.compute(R().corners, [[0, 0], [RW, 0], [RW, RH], [0, RH]]);
+    R().H = MR.Homography.compute(orderedCorners(R().corners), [[0, 0], [RW, 0], [RW, RH], [0, RH]]);
   }
   function buildResult() {
     computeRect();
