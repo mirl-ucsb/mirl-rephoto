@@ -274,7 +274,21 @@ MR.App = (function () {
     loadImage('now', { url: 'samples/now.png', name: 'now.png' });
   }
 
-  function init() { wire(); setMode('align'); loadSamplesIfEmpty(); }
+  /* keep the working state across a refresh: the points, the rectify corners, and
+     the image sources (url images reload; local files ask to be re-picked) */
+  const AUTOSAVE_KEY = 'mirl-rephoto-autosave';
+  function autosave() { try { localStorage.setItem(AUTOSAVE_KEY, projectJSON()); } catch (e) {} }
+  function restoreOrSample() {
+    let saved = null;
+    try { saved = localStorage.getItem(AUTOSAVE_KEY); } catch (e) {}
+    if (saved) { try { loadProjectObj(JSON.parse(saved)); return; } catch (e) {} }
+    loadSamplesIfEmpty();
+  }
+  function init() {
+    wire(); setMode('align'); restoreOrSample();
+    setInterval(autosave, 4000);
+    window.addEventListener('beforeunload', autosave);
+  }
 
   return { init, loadDialog, loadImage, setMode, rebuild, renderSidebar, updateCompareAvailability, updateQuality, exportPNG };
 })();
