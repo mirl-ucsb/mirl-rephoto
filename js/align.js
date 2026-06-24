@@ -32,7 +32,7 @@ MR.state = {
   thenPts: [], nowPts: [], nextSide: 'then',
   H: null, rms: null,
   present: { mode: 'curtain', split: 0.5, opacity: 0.5, blinkMs: 900, _blink: null },
-  rectify: { side: 'now', corners: [], aspectW: 3, aspectH: 2, realW: null, unit: 'm', H: null, measure: false, mPts: [], _fit: null },
+  rectify: { side: 'now', corners: [], aspectW: 3, aspectH: 2, realW: null, unit: 'm', H: null, view: 'corners', measure: false, mPts: [], _fit: null },
 };
 
 MR.Align = (function () {
@@ -152,7 +152,7 @@ MR.Align = (function () {
 
   /* ---------- compare: warped then over now ---------- */
   function buildCompare() {
-    if (!S.H) { MR.App.setMode('align'); return; }
+    if (!S.H || !S.then.img || !S.now.img) { MR.App.setMode('align'); return; }
     const stage = document.getElementById('stage'); stageClear(); stage.classList.remove('measure');
     const mk = (side, extra) => {
       const layer = MR.util.h('div', { class: 'layer', id: 'layer-' + side });

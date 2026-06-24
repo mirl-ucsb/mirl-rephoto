@@ -39,7 +39,7 @@ MR.App = (function () {
     else MR.Rectify.build();
   }
   function updateCompareAvailability() {
-    document.getElementById('mode-compare').disabled = !S.H;
+    document.getElementById('mode-compare').disabled = !(S.H && S.then.img && S.now.img);
   }
 
   /* ---------- sidebar ---------- */
@@ -48,7 +48,7 @@ MR.App = (function () {
     if (rms < 2) return ['excellent', 'good'];
     if (rms < 6) return ['good', 'good'];
     if (rms < 14) return ['fair', 'warn'];
-    return ['loose — check your points', 'warn'];
+    return ['loose, check your points', 'warn'];
   }
   function qualityBox() {
     const [word, cls] = qualityWord(S.rms);
@@ -203,7 +203,6 @@ MR.App = (function () {
     MR.util.downloadText('mirl-rephoto-points.json', JSON.stringify(data, null, 2), 'application/json');
   }
   function projectJSON() {
-    const src = side => S[side].source ? S[side].source : null;
     return JSON.stringify({
       tool: 'mirl-rephoto', version: 1, savedAt: new Date().toISOString(), mode: S.mode,
       then: { name: S.then.name, source: S.then._src || null },
@@ -232,6 +231,7 @@ MR.App = (function () {
     document.querySelectorAll('#mode-seg button').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
     document.getElementById('swap-btn').addEventListener('click', () => {
       [S.then, S.now] = [S.now, S.then]; [S.thenPts, S.nowPts] = [S.nowPts, S.thenPts];
+      S.nextSide = S.thenPts.length <= S.nowPts.length ? 'then' : 'now';
       MR.Align.computeH(); rebuild(); renderSidebar(); updateCompareAvailability();
     });
     document.getElementById('clear-pts').addEventListener('click', () => MR.Align.clearPoints());
