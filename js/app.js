@@ -21,10 +21,17 @@ MR.App = (function () {
 
   /* ---------- modes ---------- */
   const SHEETS = { align: ['R-01', 'Align points'], compare: ['R-02', 'Compare'], rectify: ['R-03', 'Rectify & measure'] };
+  /* mirror the visual 'on' state onto aria-pressed for every toggle button */
+  function reflectPressed() {
+    document.querySelectorAll('#mode-seg button, #present-seg button, #measure-btn').forEach(b => {
+      b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false');
+    });
+  }
   function setMode(mode) {
     if (mode === 'compare' && !S.H) { MR.util.toast('Place at least four point pairs first.'); return; }
     S.mode = mode;
     document.querySelectorAll('#mode-seg button').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
+    reflectPressed();
     const tbS = document.getElementById('tb-sheet'), tbM = document.getElementById('tb-mode');
     if (tbS) tbS.textContent = SHEETS[mode][0];
     if (tbM) tbM.textContent = SHEETS[mode][1];
@@ -237,6 +244,7 @@ MR.App = (function () {
     document.getElementById('clear-pts').addEventListener('click', () => MR.Align.clearPoints());
     document.querySelectorAll('#present-seg button').forEach(b => b.addEventListener('click', () => {
       document.querySelectorAll('#present-seg button').forEach(x => x.classList.toggle('on', x === b));
+      reflectPressed();
       document.getElementById('present-opacity-wrap').style.display = b.dataset.present === 'onion' ? '' : 'none';
       document.getElementById('present-blink-wrap').style.display = b.dataset.present === 'blink' ? '' : 'none';
       MR.Align.setPresent(b.dataset.present);
@@ -244,7 +252,7 @@ MR.App = (function () {
     document.getElementById('present-opacity').addEventListener('input', e => MR.Align.setOpacity(e.target.value / 100));
     document.getElementById('present-blink').addEventListener('input', e => MR.Align.setBlinkMs(+e.target.value));
     document.getElementById('measure-btn').addEventListener('click', () => {
-      const on = MR.Rectify.toggleMeasure(); document.getElementById('measure-btn').classList.toggle('on', on);
+      const on = MR.Rectify.toggleMeasure(); document.getElementById('measure-btn').classList.toggle('on', on); reflectPressed();
     });
     document.getElementById('clear-rect').addEventListener('click', () => MR.Rectify.clearCorners());
     document.getElementById('panel-btn').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('collapsed'));
