@@ -177,6 +177,32 @@ MR.App = (function () {
       texTri(ctx, img, [s10, s11, s01], [d10, d11, d01]);
     }
   }
+  /* a labelled scale bar for the squared elevation, when a known width is set;
+     units per pixel across the rectified image is realW / RW */
+  function niceLen(x) {
+    const e = Math.floor(Math.log10(x)), f = x / Math.pow(10, e);
+    return (f >= 5 ? 5 : f >= 2 ? 2 : 1) * Math.pow(10, e);
+  }
+  function drawScaleBar(ctx, RW, RH, realW, unit) {
+    if (!(realW > 0)) return;
+    const L = niceLen(realW * 0.22);              // a round length, about a fifth of the width
+    const barPx = L * RW / realW;                 // its length in image pixels
+    const x = RW * 0.045, y = RH - RH * 0.06;
+    const tick = Math.max(7, RH * 0.014), lw = Math.max(2, RW * 0.0022);
+    const path = () => { ctx.beginPath(); ctx.moveTo(x, y - tick); ctx.lineTo(x, y); ctx.lineTo(x + barPx, y); ctx.lineTo(x + barPx, y - tick); };
+    ctx.save();
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    path(); ctx.lineWidth = lw * 3.4; ctx.strokeStyle = 'rgba(255,255,255,0.92)'; ctx.stroke();
+    path(); ctx.lineWidth = lw; ctx.strokeStyle = '#1c1813'; ctx.stroke();
+    const num = L % 1 === 0 ? String(L) : String(+L.toFixed(2));
+    const label = num + ' ' + (unit || '');
+    const fs = Math.max(15, RH * 0.03);
+    ctx.font = '600 ' + fs + 'px "Spectral", Georgia, serif';
+    ctx.textBaseline = 'bottom';
+    ctx.lineWidth = fs * 0.22; ctx.strokeStyle = 'rgba(255,255,255,0.92)'; ctx.strokeText(label, x, y - tick - fs * 0.25);
+    ctx.fillStyle = '#1c1813'; ctx.fillText(label, x, y - tick - fs * 0.25);
+    ctx.restore();
+  }
   function exportPNG() {
     if (S.mode === 'compare' && S.H) {
       const Wn = S.now.natW, Hn = S.now.natH;
@@ -193,7 +219,7 @@ MR.App = (function () {
     } else if (S.mode === 'rectify' && S.rectify.view === 'result' && S.rectify.H) {
       const r = S.rectify._rect; const cv = document.createElement('canvas'); cv.width = Math.round(r.RW); cv.height = Math.round(r.RH);
       const ctx = cv.getContext('2d');
-      try { warp(ctx, S[S.rectify.side].img, S.rectify.H, S[S.rectify.side].natW, S[S.rectify.side].natH); cv.toBlob(bl => bl ? MR.util.download('mirl-rephoto-elevation.png', bl) : MR.util.toast('Export blocked by image CORS.'), 'image/png'); }
+      try { warp(ctx, S[S.rectify.side].img, S.rectify.H, S[S.rectify.side].natW, S[S.rectify.side].natH); drawScaleBar(ctx, r.RW, r.RH, S.rectify.realW, S.rectify.unit); cv.toBlob(bl => bl ? MR.util.download('mirl-rephoto-elevation.png', bl) : MR.util.toast('Export blocked by image CORS.'), 'image/png'); }
       catch (e) { MR.util.toast('Export blocked: an image did not allow copying (CORS).'); }
     } else {
       MR.util.toast('Open Compare or a squared Rectify view to export an image.');
