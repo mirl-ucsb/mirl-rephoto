@@ -3,7 +3,7 @@
 **Lay an old photograph over a new one of the same building, and see what
 changed.**
 
-> **In active development.** This tool is being built and refined in the open. Its features, file formats, and interface may still change, and some parts may be incomplete or rough. Please keep your own copies of anything important, and reports of whatever breaks are welcome.
+> **In active development, not yet announced.** This tool is being built and refined in the open, and is not yet listed among the released MIRL Tools. Its features, file formats, and interface may still change, and some parts may be incomplete or rough. Please keep your own copies of anything important, and reports of whatever breaks are welcome.
 
 MIRL Rephoto is a free, friendly tool for two closely related tasks in the study
 of buildings and places:
