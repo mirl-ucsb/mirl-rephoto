@@ -61,8 +61,8 @@ Switch to **Rectify and measure**.
 
 1. Choose whether to square the **Then** or the **Now** image.
 2. Click the **four corners** of something you know is truly rectangular and flat:
-   a window opening, a door, a signboard, a stone panel. Go clockwise from the
-   top-left.
+   a window opening, a door, a signboard, a stone panel. The order you click
+   them in does not matter.
 3. Enter the rectangle's **true proportion** (its real width-to-height ratio). The
    image is warped so that rectangle becomes square to the camera, and the whole
    facade is squared with it.
@@ -127,6 +127,11 @@ This is a property of perspective, not a fault in the tool.
 - **Measurement** assumes the marked quadrilateral is rectangular and coplanar,
   and that the proportion entered is correct; scale is then uniform across the
   squared image.
+- **Design.** The Material / Image Research Lab's shared identity: Familjen
+  Grotesk and Epilogue on the lab's paper white, with Rephoto's yellow
+  Risograph key (set as ochre wherever it is text). Then is blue and now is red,
+  as in MIRL Aftermath. The fonts are vendored in `fonts/` under the SIL Open
+  Font License, so the tool needs no network to look right.
 - **No data leaves your machine.** Everything runs in the browser. Images can be
   exported to PNG only if loaded from your computer or from a server that allows
   cross-origin reading (CORS).
@@ -137,6 +142,7 @@ This is a property of perspective, not a fault in the tool.
 mirl-rephoto/
 ├── index.html
 ├── css/style.css
+├── fonts/              # Familjen Grotesk, Epilogue, Plex Mono (OFL)
 ├── js/
 │   ├── homography.js   # fit and apply the projective transform
 │   ├── align.js        # control points + the compare overlay

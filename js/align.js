@@ -1,4 +1,4 @@
-/* align.js — shared state + helpers, the two-panel control-point interface,
+/* align.js: shared state + helpers, the two-panel control-point interface,
    and the layered compare view (curtain / onion skin / blink). */
 
 /* ---------- helpers ---------- */
@@ -48,7 +48,7 @@ MR.Align = (function () {
     return MR.util.h('div', { class: 'empty' },
       MR.util.h('div', { class: 'big' }, '⌖'),
       MR.util.h('div', null, (side === 'then' ? 'The historical photograph' : 'The current photograph')),
-      MR.util.h('button', { class: 'btn', onclick: () => MR.App.loadDialog(side) }, 'Load image'),
+      MR.util.h('button', { class: 'btn', onclick: () => MR.App.loadDialog(side) }, 'Choose an image'),
       MR.util.h('div', { class: 'hint' }, 'or drop a file here'));
   }
   function panel(side) {
@@ -57,9 +57,10 @@ MR.Align = (function () {
     const dots = MR.util.h('div', { id: 'dots-' + side, style: { position: 'absolute', inset: '0' } });
     const head = MR.util.h('div', { class: 'panel-head' },
       MR.util.h('span', { class: 'swatch', style: { background: side === 'then' ? 'var(--then)' : 'var(--now)' } }),
-      MR.util.h('span', null, (side === 'then' ? 'THEN' : 'NOW') + (st.name ? '  ·  ' + st.name : '')),
+      MR.util.h('b', null, side === 'then' ? 'Then' : 'Now'),
+      st.name ? MR.util.h('span', { class: 'nm' }, st.name) : null,
       MR.util.h('span', { style: { flex: '1' } }),
-      st.img ? MR.util.h('button', { class: 'btn', style: { pointerEvents: 'auto', padding: '2px 8px', fontSize: '11px' }, onclick: () => MR.App.loadDialog(side) }, 'Replace') : null);
+      st.img ? MR.util.h('button', { class: 'btn small', onclick: () => MR.App.loadDialog(side) }, 'Replace') : null);
     const p = MR.util.h('div', { class: 'imgpanel', id: 'panel-' + side }, head, img, dots);
     if (st.img) img.src = st.img.src; else p.append(emptyBox(side));
     p.addEventListener('click', e => onPanelClick(side, e, p));
@@ -118,7 +119,7 @@ MR.Align = (function () {
   function onPanelClick(side, e, p) {
     if (S.mode !== 'align' || !S[side].img) return;
     if (e.target.closest('.dot')) return;            // a click that ends a drag
-    if (side !== S.nextSide) { MR.util.toast('Place point ' + (Math.min(S.thenPts.length, S.nowPts.length) + 1) + ' on the ' + S.nextSide.toUpperCase() + ' image next.'); return; }
+    if (side !== S.nextSide) { MR.util.toast('Place point ' + (Math.min(S.thenPts.length, S.nowPts.length) + 1) + ' on the ' + S.nextSide + ' image next.'); return; }
     const fit = S[side]._fit; const r = p.getBoundingClientRect();
     const x = (e.clientX - r.left - fit.ox) / fit.s, y = (e.clientY - r.top - fit.oy) / fit.s;
     if (x < 0 || y < 0 || x > S[side].natW || y > S[side].natH) return;

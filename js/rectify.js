@@ -1,4 +1,4 @@
-/* rectify.js — square a slanted facade to a flat elevation, then measure from
+/* rectify.js: square a slanted facade to a flat elevation, then measure from
    it. Mark the four corners of something you know is rectangular (a window, a
    door, a signboard); the image is warped to a true rectangle. Give one real
    dimension and you can read distances off the squared image. */
@@ -18,7 +18,7 @@ MR.Rectify = (function () {
       stage.insertBefore(MR.util.h('div', { class: 'empty', style: { position: 'absolute', inset: '0' } },
         MR.util.h('div', { class: 'big' }, '▱'),
         MR.util.h('div', null, 'Load an image to square up'),
-        MR.util.h('button', { class: 'btn', onclick: () => MR.App.loadDialog(R().side) }, 'Load image'),
+        MR.util.h('button', { class: 'btn', onclick: () => MR.App.loadDialog(R().side) }, 'Choose an image'),
         MR.util.h('div', { class: 'hint' }, 'Choose Then or Now in the panel')), document.getElementById('rcurtain'));
       return;
     }
@@ -36,7 +36,8 @@ MR.Rectify = (function () {
     const dots = MR.util.h('div', { id: 'dots-rect', style: { position: 'absolute', inset: '0' } });
     const head = MR.util.h('div', { class: 'panel-head' },
       MR.util.h('span', { class: 'swatch', style: { background: 'var(--accent)' } }),
-      MR.util.h('span', null, R().side.toUpperCase() + '  ·  click the four corners of the rectangle, in any order'));
+      MR.util.h('b', null, R().side === 'then' ? 'Then' : 'Now'),
+      MR.util.h('span', { class: 'nm' }, 'Click the four corners of the rectangle, in any order'));
     const p = MR.util.h('div', { class: 'imgpanel', id: 'panel-rect' }, head, img, svg, dots);
     p.addEventListener('click', e => onCornerClick(e, p));
     p.addEventListener('dragover', e => { e.preventDefault(); p.classList.add('drop'); });
@@ -76,7 +77,7 @@ MR.Rectify = (function () {
       const poly = document.createElementNS(NS, pts.length >= 3 ? 'polygon' : 'polyline');
       poly.setAttribute('points', pts.map(p => p.join(',')).join(' '));
       poly.setAttribute('fill', pts.length >= 3 ? 'rgba(169,50,33,0.10)' : 'none');
-      poly.setAttribute('stroke', '#a93221'); poly.setAttribute('stroke-width', '1.5');
+      poly.setAttribute('stroke', '#7a5a00'); poly.setAttribute('stroke-width', '1.5');
       svg.appendChild(poly);
     }
   }

@@ -1,4 +1,4 @@
-/* homography.js — fit and apply a projective transform (a homography) from
+/* homography.js: fit and apply a projective transform (a homography) from
    matched point pairs. This is what lets one photograph be warped onto the
    viewpoint of another, or a slanted facade be squared to a flat elevation.
 

@@ -10,30 +10,37 @@
 <body>
 
 <header class="app">
-  <h1>MIRL&nbsp;Rephoto</h1>
-  <span class="tag">then and now, aligned</span>
-  <span class="spacer"></span>
-  <a href="https://mirl.arthistory.ucsb.edu" target="_blank" rel="noopener">Material&nbsp;/&nbsp;Image Research Lab</a>
+  <a class="brand" href="https://mirl.arthistory.ucsb.edu" target="_blank" rel="noopener" aria-label="MIRL Rephoto, from the Material / Image Research Lab"><span class="bleed" aria-hidden="true"></span><b aria-hidden="true">MIRL</b><span class="tool" aria-hidden="true">Rephoto</span></a>
+  <div class="seg views" id="mode-seg" role="group" aria-label="Sheets">
+    <button data-mode="align" class="on">Align points</button>
+    <button data-mode="compare" id="mode-compare" disabled>Compare</button>
+    <button data-mode="rectify">Rectify and measure</button>
+  </div>
+  <div class="tools">
+    <a class="lab" href="https://mirl.arthistory.ucsb.edu" target="_blank" rel="noopener">Material / Image Research Lab</a>
+    <button class="btn" id="panel-btn" title="Show or hide the panel">Panel</button>
+    <div class="menu-wrap">
+      <button class="btn primary" id="export-btn" aria-haspopup="menu">Export &#9662;</button>
+      <div class="menu hidden" id="export-menu">
+        <button data-act="png">Save current view as PNG</button>
+        <button data-act="points">Save points and homography (.json)</button>
+        <hr>
+        <button data-act="project">Save project (.json)</button>
+        <button data-act="load">Open project (.json)</button>
+      </div>
+    </div>
+  </div>
 </header>
 
 <div class="toolbar">
-  <div class="group">
-    <span class="label">Sheet index</span>
-    <div class="seg" id="mode-seg">
-      <button data-mode="align" class="on"><span class="sheetno">R-01</span>Align points</button>
-      <button data-mode="compare" id="mode-compare" disabled><span class="sheetno">R-02</span>Compare</button>
-      <button data-mode="rectify"><span class="sheetno">R-03</span>Rectify &amp; measure</button>
-    </div>
-  </div>
-
   <div class="group" id="align-tools">
-    <button class="btn" id="swap-btn" title="Swap which image is 'then' and which is 'now'">Swap then / now</button>
+    <button class="btn" id="swap-btn" title="Swap which image is then and which is now">Swap then and now</button>
     <button class="btn" id="clear-pts" title="Remove every control point">Clear points</button>
   </div>
 
   <div class="group" id="present-tools" style="display:none">
     <span class="label">Show</span>
-    <div class="seg" id="present-seg">
+    <div class="seg modes" id="present-seg" role="group" aria-label="Comparison">
       <button data-present="curtain" class="on">Curtain</button>
       <button data-present="onion">Onion skin</button>
       <button data-present="blink">Blink</button>
@@ -48,22 +55,6 @@
     <button class="btn toggle" id="measure-btn" title="Click two points to measure a distance">Measure</button>
     <button class="btn" id="clear-rect" title="Remove the four corners">Clear corners</button>
   </div>
-
-  <span style="flex:1"></span>
-
-  <div class="group">
-    <div class="menu-wrap">
-      <button class="btn" id="export-btn">Export &#9662;</button>
-      <div class="menu hidden" id="export-menu">
-        <button data-act="png">Save current view as PNG</button>
-        <button data-act="points">Save points &amp; homography (.json)</button>
-        <hr>
-        <button data-act="project">Save project (.json)</button>
-        <button data-act="load">Open project (.json)</button>
-      </div>
-    </div>
-    <button class="btn" id="panel-btn" title="Show or hide the panel">Panel</button>
-  </div>
 </div>
 
 <div class="main">
@@ -75,7 +66,7 @@
       <div class="tb-org">Material / Image Research Lab, UC Santa Barbara</div>
       <div class="tb-title">Rephotographic survey</div>
       <div class="tb-cells">
-        <div class="tb-cell"><span>Sheet</span><b id="tb-sheet">R-01</b></div>
+        <div class="tb-cell"><span>Sheet</span><b id="tb-sheet">1 of 3</b></div>
         <div class="tb-cell"><span>Contents</span><b id="tb-mode">Align points</b></div>
         <div class="tb-cell"><span>Date</span><b>2026</b></div>
       </div>

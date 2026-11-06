@@ -14,8 +14,8 @@ authors:
     affiliation: >-
       Material / Image Research Lab, Department of History of Art &
       Architecture, University of California, Santa Barbara
-version: "1.0.0"
-date-released: "2026-06-10"
+version: "1.1.0"
+date-released: "2026-11-06"
 license: MIT
 repository-code: "https://github.com/mirl-ucsb/mirl-rephoto"
 url: "https://mirl-ucsb.github.io/mirl-rephoto/"

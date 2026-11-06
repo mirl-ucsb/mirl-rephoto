@@ -1,4 +1,4 @@
-/* app.js — loading, mode switching, the side panel, export, and samples.
+/* app.js: loading, mode switching, the side panel, export, and samples.
    Loaded last. */
 
 MR.App = (function () {
@@ -20,7 +20,7 @@ MR.App = (function () {
   function fileSource(file) { return { objectUrl: URL.createObjectURL(file), name: file.name }; }
 
   /* ---------- modes ---------- */
-  const SHEETS = { align: ['R-01', 'Align points'], compare: ['R-02', 'Compare'], rectify: ['R-03', 'Rectify & measure'] };
+  const SHEETS = { align: ['1 of 3', 'Align points'], compare: ['2 of 3', 'Compare'], rectify: ['3 of 3', 'Rectify and measure'] };
   /* mirror the visual 'on' state onto aria-pressed for every toggle button */
   function reflectPressed() {
     document.querySelectorAll('#mode-seg button, #present-seg button, #measure-btn').forEach(b => {
@@ -75,7 +75,7 @@ MR.App = (function () {
     sb.append(MR.util.h('div', { class: 'sect' },
       MR.util.h('h3', null, 'Align two photographs'),
       step(1, 'Load the ', b('historical'), ' photo on the left and the ', b('current'), ' one on the right.'),
-      step(2, 'Click a feature on ', b('THEN'), ', then the ', b('same feature'), ' on ', b('NOW'), '. Repeat.'),
+      step(2, 'Click a feature on ', b('then'), ', then the ', b('same feature'), ' on ', b('now'), '. Repeat.'),
       step(3, 'Place ', b('four or more'), ' pairs. Corners of windows and doors work well.'),
       step(4, 'Open ', b('Compare'), ' to swipe between the aligned images.')));
     const q = qualityBox(); if (q) sb.append(MR.util.h('div', { class: 'sect' }, MR.util.h('h3', null, 'Alignment'), q,
@@ -86,8 +86,8 @@ MR.App = (function () {
       for (let i = 0; i < max; i++) {
         rows.push(MR.util.h('tr', null,
           MR.util.h('td', null, String(i + 1)),
-          MR.util.h('td', null, S.thenPts[i] ? fmt(S.thenPts[i]) : '—'),
-          MR.util.h('td', null, S.nowPts[i] ? fmt(S.nowPts[i]) : '—'),
+          MR.util.h('td', null, S.thenPts[i] ? fmt(S.thenPts[i]) : '–'),
+          MR.util.h('td', null, S.nowPts[i] ? fmt(S.nowPts[i]) : '–'),
           MR.util.h('td', { class: 'del', title: 'Delete pair', onclick: () => MR.Align.deletePair(i) }, '×')));
       }
       sb.append(MR.util.h('div', { class: 'sect' }, MR.util.h('h3', null, 'Point pairs'),
@@ -111,7 +111,7 @@ MR.App = (function () {
       MR.util.h('h3', null, 'Square up a facade'),
       MR.util.h('div', { class: 'field' }, MR.util.h('label', null, 'Image'),
         seg2(['then', 'now'], R.side, v => MR.Rectify.setSide(v))),
-      MR.util.h('div', { class: 'hint' }, 'Click the four corners of something truly rectangular (a window, a door, a sign), clockwise from the top-left. The image is warped so that rectangle becomes square to the camera.')));
+      MR.util.h('div', { class: 'hint' }, 'Click the four corners of something truly rectangular (a window, a door, a sign), in any order. The image is warped so that rectangle becomes square to the camera.')));
     sb.append(MR.util.h('div', { class: 'sect' },
       MR.util.h('h3', null, 'True proportion'),
       MR.util.h('div', { class: 'row2' },
@@ -145,7 +145,7 @@ MR.App = (function () {
   function numInput(val, on, ph) { const i = MR.util.h('input', { type: 'number', step: 'any', value: val, placeholder: ph || '' }); i.addEventListener('input', () => on(parseFloat(i.value) || 0)); return i; }
   function textInput(val, on) { const i = MR.util.h('input', { type: 'text', value: val }); i.addEventListener('input', () => on(i.value)); return i; }
   function seg2(opts, cur, on) {
-    const wrap = MR.util.h('div', { class: 'seg' });
+    const wrap = MR.util.h('div', { class: 'seg modes' });
     opts.forEach(o => { const btn = MR.util.h('button', { class: o === cur ? 'on' : '' }, o[0].toUpperCase() + o.slice(1)); btn.addEventListener('click', () => on(o)); wrap.append(btn); });
     return wrap;
   }
@@ -193,14 +193,14 @@ MR.App = (function () {
     ctx.save();
     ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     path(); ctx.lineWidth = lw * 3.4; ctx.strokeStyle = 'rgba(255,255,255,0.92)'; ctx.stroke();
-    path(); ctx.lineWidth = lw; ctx.strokeStyle = '#1c1813'; ctx.stroke();
+    path(); ctx.lineWidth = lw; ctx.strokeStyle = '#1d1b18'; ctx.stroke();
     const num = L % 1 === 0 ? String(L) : String(+L.toFixed(2));
     const label = num + ' ' + (unit || '');
     const fs = Math.max(15, RH * 0.03);
-    ctx.font = '600 ' + fs + 'px "Spectral", Georgia, serif';
+    ctx.font = '600 ' + fs + 'px "Epilogue", "Helvetica Neue", Arial, sans-serif';
     ctx.textBaseline = 'bottom';
     ctx.lineWidth = fs * 0.22; ctx.strokeStyle = 'rgba(255,255,255,0.92)'; ctx.strokeText(label, x, y - tick - fs * 0.25);
-    ctx.fillStyle = '#1c1813'; ctx.fillText(label, x, y - tick - fs * 0.25);
+    ctx.fillStyle = '#1d1b18'; ctx.fillText(label, x, y - tick - fs * 0.25);
     ctx.restore();
   }
   function exportPNG() {
